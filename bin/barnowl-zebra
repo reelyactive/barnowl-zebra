@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+const BarnowlZebra = require('../lib/barnowlzebra.js');
+
+let barnowl = new BarnowlZebra();
+
+barnowl.addListener(BarnowlZebra.WsListener, { address: "ws://127.0.0.1/ws" });
+
+barnowl.on('raddec', (raddec) => {
+  console.log(raddec.toFlattened());
+});

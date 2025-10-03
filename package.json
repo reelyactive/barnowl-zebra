@@ -1,0 +1,42 @@
+{
+  "name": "barnowl-zebra",
+  "homepage": "https://github.com/reelyactive/barnowl-zebra/",
+  "author": {
+    "name": "reelyActive",
+    "email": "info@reelyactive.com"
+  },
+  "description": "Collect ambient RAIN RFID data from Zebra readers.  We believe in an open Internet of Things.",
+  "keywords": [
+    "reelyActive",
+    "barnowl",
+    "Zebra",
+    "Zebra IoT Connector",
+    "raddec"
+  ],
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "./lib/barnowlzebra.js",
+  "scripts": {
+    "start": "node bin/barnowl-zebra"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reelyactive/barnowl-zebra.git"
+  },
+  "dependencies": {
+    "raddec": ">=0.6.1",
+    "ws": "~8.18.3"
+  },
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/reelyactive/barnowl-zebra/issues"
+  },
+  "contributors": [
+    {
+      "name": "Jeffrey Dungen"
+    }
+  ],
+  "license": "MIT"
+}
