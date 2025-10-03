@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "raddec": ">=0.6.1",
+    "reconnecting-websocket": "~4.4.0",
     "ws": "~8.18.3"
   },
   "devDependencies": {},
