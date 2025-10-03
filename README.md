@@ -37,7 +37,7 @@ const BarnowlZebra = require('barnowl-zebra');
 let barnowl = new Barnowl({ enableMixing: true });
 
 barnowl.addListener(BarnowlZebra, {}, BarnowlZebra.WsListener,
-                    { address: "ws://12.34.56.78/ws" }); // Use reader's address
+                    { url: "ws://12.34.56.78/ws" }); // Use reader's IP address
 
 barnowl.on('raddec', (raddec) => {
   console.log(raddec);
