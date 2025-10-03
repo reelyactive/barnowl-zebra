@@ -8,6 +8,131 @@ __barnowl-zebra__ converts the decodings of _any_ ambient RAIN RFID tags by Zebr
 __barnowl-zebra__ is a lightweight [Node.js package](https://www.npmjs.com/package/barnowl-zebra) that can run on resource-constrained edge devices as well as on powerful cloud servers and anything in between.  It is included in reelyActive's [Pareto Anywhere](https://www.reelyactive.com/pareto/anywhere/) open source middleware suite, and can just as easily be run standalone behind a [barnowl](https://github.com/reelyactive/barnowl) instance, as detailed in the code examples below.
 
 
+Getting Started
+---------------
+
+Learn "owl" about the __raddec__ JSON data output:
+-  [reelyActive Developer's Cheatsheet](https://reelyactive.github.io/diy/cheatsheet/)
+
+
+Quick Start
+-----------
+
+Clone this repository, install package dependencies with `npm install`, and then from the root folder run at any time:
+
+    npm start
+
+__barnowl-zebra__ will attempt to connect to a local MQTT server (mqtt://localhost) and subscribe to the ziotc topic, outputting (flattened) __raddec__ JSON to the console.
+
+
+Hello barnowl-zebra!
+--------------------
+
+Developing an application directly from __barnowl-zebra__?  Start by pasting the code below into a file called server.js:
+
+```javascript
+const Barnowl = require('barnowl');
+const BarnowlZebra = require('barnowl-zebra');
+
+let barnowl = new Barnowl({ enableMixing: true });
+
+barnowl.addListener(BarnowlZebra, {}, BarnowlZebra.WsListener,
+                    { address: "ws://12.34.56.78/ws" }); // Use reader's address
+
+barnowl.on('raddec', (raddec) => {
+  console.log(raddec);
+  // Trigger your application logic here
+});
+```
+
+From the same folder as the server.js file, install package dependencies with the commands `npm install barnowl-zebra` and `npm install barnowl`.  Then run the code with the command `node server.js` and observe the stream of radio decodings (raddec objects) output to the console:
+
+```javascript
+{
+  transmitterId: "a00000000000000000001234",
+  transmitterIdType: 5,
+  rssiSignature: [
+    {
+      receiverId: "c47dccffffff",
+      receiverIdType: 2,
+      receiverAntenna: 3,
+      rssi: -42,
+      numberOfDecodings: 1
+    }
+  ],
+  timestamp: 1645568542222
+}
+```
+
+See the [Supported Listener Interfaces](#supported-listener-interfaces) below to adapt the code to listen for your reader(s).
+
+
+Supported Listener Interfaces
+-----------------------------
+
+The following listener interfaces are supported by __barnowl-zebra__.  Extend the [Hello barnowl-zebra!](#hello-barnowl-zebra) example above by pasting in any of the code snippets below.
+
+### MQTT
+
+Connect to a MQTT server and subscribe to the ziotc topic to receive messages:
+
+```javascript
+let options = { url: "mqtt://localhost", topic: "ziotc/#",
+                clientOptions: { username: "user", password: "pass" } };
+barnowl.addListener(BarnowlZebra, {}, BarnowlZebra.MqttListener, options);
+```
+
+The clientOptions are defined in the [MQTT.js Client constructor documentation](https://github.com/mqttjs/MQTT.js#client).
+
+### Web Socket
+
+Connect, as a client, to the Web Socket server running on the reader:
+
+```javascript
+let options = { url: "ws://12.34.56.78/ws" };
+barnowl.addListener(BarnowlZebra, {}, BarnowlZebra.WsListener, options);
+```
+
+The client will automatically attempt to reconnect should the connection be closed.  Note the two possible url formats:
+- "ws://12.34.56.78/ws" for _regular_ Web Sockets
+- "wss://12.34.56.78/ws" for _secure_ Web Sockets
+
+Change 12.34.56.78 to the IP address of the reader on the local network.
+
+### Test
+
+Provides a steady stream of simulated Zebra IoT Connector messages for testing purposes.
+
+```javascript
+barnowl.addListener(BarnowlZebra, {}, BarnowlZebra.TestListener, {});
+```
+
+
+Required Zebra IoT Connector fields
+-----------------------------------
+
+In order to populate the __raddec__ data structure, the following fields must be selected in the reader's Operating Mode Configuration:
+
+| Field           | Corresponding raddec property     | 
+|:----------------|:----------------------------------|
+| MAC             | receiverId & receiverIdType       |
+| (EPC) or TID    | transmitterId & transmitterIdType |
+| ANTENNA         | receiverAntenna                   |
+| (Timestamp)     | timestamp                         |
+| RSSI            | rssi                              |
+| SEEN_COUNT      | numberOfDecodings                 |
+
+
+Is that owl you can do?
+-----------------------
+
+While __barnowl-zebra__ may suffice standalone for simple real-time applications, its functionality can be greatly extended with the following software packages:
+- [advlib-epc](https://github.com/reelyactive/advlib-epc) to decode the Electronic Product Code (EPC) into JSON
+- [barnowl](https://github.com/reelyactive/barnowl) to combine parallel streams of RF decoding data in a technology-and-vendor-agnostic way
+
+These packages and more are bundled together as the [Pareto Anywhere](https://www.reelyactive.com/pareto/anywhere) open source middleware suite, which includes a variety of __barnowl-x__ listeners, APIs and interactive web apps.
+
+
 Contributing
 ------------
 
