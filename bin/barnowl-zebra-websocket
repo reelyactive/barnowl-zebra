@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+const BarnowlZebra = require('../lib/barnowlzebra.js');
+
+let url;
+
+if(process.argv.length > 2) {
+  let address = process.argv[2];
+  url = 'ws://' + address + '/ws';
+  console.log('Attempting Web Socket connection with reader on', url);
+}
+else {
+  console.log('Specify the IP address or hostname of the reader, for example:');
+  console.log('    npm run websocket 12.34.56.78');
+  console.log('    npm run websocket FX9600123456');
+  return console.log('and run this script again.');
+}
+
+let barnowl = new BarnowlZebra();
+
+barnowl.addListener(BarnowlZebra.WsListener, { url: url });
+
+barnowl.on('raddec', (raddec) => {
+  console.log(raddec.toFlattened());
+});

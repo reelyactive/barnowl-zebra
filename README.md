@@ -11,6 +11,9 @@ __barnowl-zebra__ is a lightweight [Node.js package](https://www.npmjs.com/packa
 Getting Started
 ---------------
 
+Follow our step-by-step tutorial to get started with __barnowl-zebra__ or __Pareto Anywhere__ using a FX9600 reader:
+- [Configure a Zebra FX9600 Reader](https://reelyactive.github.io/diy/zebra-fx9600-config/)
+
 Learn "owl" about the __raddec__ JSON data output:
 -  [reelyActive Developer's Cheatsheet](https://reelyactive.github.io/diy/cheatsheet/)
 
@@ -18,11 +21,17 @@ Learn "owl" about the __raddec__ JSON data output:
 Quick Start
 -----------
 
-Clone this repository, install package dependencies with `npm install`, and then from the root folder run at any time:
+Clone this repository, install package dependencies with `npm install`, and then from the root folder, at any time, run _either_:
 
     npm start
 
-__barnowl-zebra__ will attempt to connect to a local MQTT server (mqtt://localhost) and subscribe to the ziotc topic, outputting (flattened) __raddec__ JSON to the console.
+for __barnowl-zebra__ to attempt to connect to a local __MQTT__ server (mqtt://localhost) and subscribe to the ziotc topic.
+
+    npm run websocket FX9600123456
+
+for __barnowl-zebra__ to attempt to connect to the __Web Socket__ endpoint of the reader on the given hostname or IP address.
+
+In either case (flattened) __raddec__ JSON will be printed to the console.
 
 
 Hello barnowl-zebra!

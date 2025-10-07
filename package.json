@@ -19,7 +19,8 @@
   },
   "main": "./lib/barnowlzebra.js",
   "scripts": {
-    "start": "node bin/barnowl-zebra"
+    "start": "node bin/barnowl-zebra",
+    "websocket": "node bin/barnowl-zebra-websocket"
   },
   "repository": {
     "type": "git",
